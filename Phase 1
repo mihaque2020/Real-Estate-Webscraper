@@ -1,0 +1,41 @@
+import requests
+from bs4 import BeautifulSoup
+
+request = requests.get("https://www.century21.com/real-estate/boston-ma/LCMABOSTON/?p=1")
+content = request.content
+soup = BeautifulSoup(content, "html.parser")
+all_info = soup.find_all("div",{"class":"property-card-primary-info"})
+
+
+# Inspect, identify elements, extract through class identifiers
+for residence in all_info: # price, address, beds, baths, 1/2 baths, sqft
+    print(residence.find("a",{"class","listing-price"}).text.replace("\n","").replace(" ",""))
+    print(residence.find("div",{"class","property-address"}).text.strip())
+    print(residence.find("div",{"class","property-city"}).text.replace("\n","").strip())
+
+    try:
+        print(residence.find("div",{"class","property-beds"}).find("strong").text)
+    except:
+        print(None)
+    try:
+        print(residence.find("div",{"class","property-baths"}).find("strong").text)
+    except:
+        print(None)
+    try:
+        print(residence.find("div",{"class","property-half-baths"}).find("strong").text)
+    except:
+        print(None)
+    try:
+        print(residence.find("div",{"class","property-sqft"}).find("strong").text)
+    except:
+        print(None)
+    print(" ")
+    
+    #print(residence.find("ul",{"class","property-features"}))
+
+    # extracting Elements without Unique Identifiers:
+    # for column_group in item.find_all("div,{""class":"columnGroup"}))
+        # print(column_group)
+        # for feature_group, feature_name in zip(column_group.find_all("span,{"class":"featureGroup"}),column_group.find_all("span",{"class":"featureName"})):
+    
+ 
